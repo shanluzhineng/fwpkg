@@ -30,6 +30,12 @@ func HandleErrorInternalServerError(ctx iris.Context, err error) {
 	HandleError(http.StatusInternalServerError, ctx, err)
 }
 
+func HandleFailedWithMsg(ctx iris.Context, errMsg string) {
+	ctx.StopWithJSON(http.StatusOK, NewErrorResponse(func(br *BaseResponse) {
+		br.SetMessage(errMsg)
+	}))
+}
+
 func HandleSuccess(ctx iris.Context) {
 	ctx.StopWithJSON(http.StatusOK, NewSuccessResponse())
 }

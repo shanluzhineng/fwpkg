@@ -43,7 +43,7 @@ func NewErrorResponse(opts ...func(*BaseResponse)) *BaseResponse {
 	r := &BaseResponse{}
 	r.SetCode(Code_GeneralError)
 	r.Status = HttpResponseStatusOk
-	r.SetMessage(HttpResponseMessageSuccess)
+	r.SetMessage(HttpResponseMessageError)
 	if len(opts) > 0 {
 		for _, eachOpt := range opts {
 			eachOpt(r)
