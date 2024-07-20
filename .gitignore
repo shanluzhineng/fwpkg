@@ -1,0 +1,6 @@
+*.patch
+
+tags
+TAGS
+
+go.sum
