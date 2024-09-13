@@ -216,3 +216,33 @@ func (m *Middleware) GetUserClaims(ctx iris.Context) *casdoorsdk.Claims {
 	}
 	return claims
 }
+
+// 独立中间件函数
+const AuthKey = "userKey"
+
+func IrisCasdoorHandler(c iris.Context) {
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		c.StopWithError(200, fmt.Errorf("no authorization 1"))
+		return
+	}
+	token := strings.Split(authHeader, "Bearer ")
+	if len(token) != 2 {
+		if len(token) == 1 && len(token[0]) > 0 {
+			token = append(token, token[0])
+		} else {
+			c.StopWithError(200, fmt.Errorf("no authorization 2"))
+			return
+		}
+	}
+	claims, err := casdoorsdk.ParseJwtToken(token[1])
+	if err != nil {
+		c.StopWithError(200, fmt.Errorf("parseToken fail"))
+		return
+	}
+	// record login info into current ctx, transfer to next handler
+	//c.set(web.AuthKey, claims)
+	c.Values().Set(AuthKey, claims)
+	// Passthrough to next handler if needed
+	c.Next()
+}

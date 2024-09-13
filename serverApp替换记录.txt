@@ -1,0 +1,37 @@
+
+abmp.cc/abmp  		  				github.com/shanluzhineng/fwpkg/system
+abmp.cc/abmp/pkg/log				github.com/shanluzhineng/fwpkg/system/log
+abmp.cc/abmp/pkg/utils/lang			github.com/shanluzhineng/fwpkg/system/lang
+abmp.cc/abmp/pkg/utils				github.com/shanluzhineng/fwpkg/utils
+abmp.cc/abmp/pkg/model				github.com/shanluzhineng/fwpkg/controllerx/responsex
+
+---
+abmp.cc/app/pkg/app					github.com/shanluzhineng/fwpkg/app
+abmp.cc/app/pkg/host				github.com/shanluzhineng/fwpkg/app/host
+
+abmp.cc/cache/redis/starter			github.com/shanluzhineng/fwpkg/redisx/starter
+abmp.cc/redis						github.com/shanluzhineng/fwpkg/redisx
+abmp.cc/registry/consul				github.com/shanluzhineng/fwpkg/registry.consul
+
+abmp.cc/appserver/gormx				github.com/shanluzhineng/fwpkg/entity/gorminit
+abmp.cc/appserver/pkg				github.com/shanluzhineng/fwpkg/controllerx  ---- 仅对 appserver.BaseServiceContext 生效
+abmp.cc/appserver/pkg/entity		github.com/shanluzhineng/fwpkg/entity
+abmp.cc/appserver/pkg/dto			github.com/shanluzhineng/fwpkg/controllerx/dto
+abmp.cc/appserver/web				github.com/shanluzhineng/fwpkg/controllerx/responsex
+abmp.cc/appserver/web/middleware	github.com/shanluzhineng/fwpkg/controllerx/fwauth
+
+abmp.cc/webserver/app				github.com/shanluzhineng/fwpkg/controllerx
+abmp.cc/webserver/controller		github.com/shanluzhineng/fwpkg/controllerx/responsex
+abmp.cc/webserver/starter/healthcheck		github.com/shanluzhineng/fwpkg/controllerx/debuger/healthcheck
+
+
+
+github.com/abmpio/mongodbr			github.com/shanluzhineng/fwpkg/mongodbr
+github.com/abmpio/libx/mapx			github.com/shanluzhineng/fwpkg/utils/mapx
+github.com/abmpio/libx/slicex			github.com/shanluzhineng/fwpkg/utils/slicex
+
+
+github.com/abmpio/configurationx		github.com/shanluzhineng/configurationx
+github.com/abmpio/threadingx			github.com/shanluzhineng/threadingx
+github.com/abmpio/plugin.bootstrap		github.com/shanluzhineng/plugin.bootstrap
+github.com/abmpio/upack/cmd				github.com/shanluzhineng/upack/cmd

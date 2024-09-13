@@ -26,6 +26,15 @@ func PtrToInt(v *int) int {
 	return *v
 }
 
+func StringToPtr(v string) *string {
+	return &v
+}
+
+// 获取值的指针
+func ValueToPtr[T any](v T) *T {
+	return &v
+}
+
 func SliceToInterfaceSlice[T any](list []T) []interface{} {
 	result := make([]interface{}, 0)
 	if len(list) <= 0 {

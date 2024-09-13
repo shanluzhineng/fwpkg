@@ -1,5 +1,5 @@
 *.patch
-
+*.code-workspace
 tags
 TAGS
 

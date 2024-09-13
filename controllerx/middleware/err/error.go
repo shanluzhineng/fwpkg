@@ -2,6 +2,7 @@ package err
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/kataras/iris/v12/context"
 
@@ -33,8 +34,8 @@ func (v *errWrapperMiddleware) ServeHTTP(ctx *context.Context) {
 				br.SetMessage(string(responseData))
 			}
 		}))
-		log.Logger.Error(string(responseData))
 	}
+	log.Logger.Warn(fmt.Sprintf("ServeHTTP >> resp: %s", string(responseData)))
 }
 
 func (v *errWrapperMiddleware) responseIsIgnore(responseData []byte) bool {
