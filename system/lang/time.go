@@ -7,6 +7,23 @@ import (
 	"time"
 )
 
+// 当前时间字符串 "2006-01-02 15:04:05"。
+// 注：代码中未设置时区，与服务器时区有关
+func TimeToStr(t time.Time) string {
+	if t.IsZero() {
+		t = time.Now()
+	}
+	return t.Local().Format(DefaultTimeLayout)
+}
+
+// 时间转为date字符串，即：年-月-日
+func TimeToDateStr(t time.Time) string {
+	if t.IsZero() {
+		t = time.Now()
+	}
+	return t.In(ChinaTimezone).Format(DefaultDateLayout)
+}
+
 func NowToPtr() *time.Time {
 	return TimeToPtr(time.Now())
 }
@@ -52,4 +69,27 @@ func DurationHumanText(duration time.Duration) string {
 		hours,
 		minutes,
 		seconds)
+}
+
+// n天前、后的时间，负数 before，正数 after
+func TimeAddDays(n int64) time.Time {
+	resTime := time.Now().Add(time.Hour * 24 * time.Duration(n))
+	return resTime
+}
+
+// n小时前、后的时间，负数 before，正数 after
+func TimeAddHours(n int64) time.Time {
+	resTime := time.Now().Add(time.Hour * time.Duration(n))
+	return resTime
+}
+
+// n分钟前、后的时间，负数 before，正数 after
+func TimeAddMinutes(n int64) time.Time {
+	resTime := time.Now().Add(time.Minute * time.Duration(n))
+	return resTime
+}
+
+// 时间戳转时间
+func TimeFromTimestampMs(milliTs int64) time.Time {
+	return time.UnixMilli(milliTs)
 }

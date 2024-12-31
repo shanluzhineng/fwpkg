@@ -3,12 +3,15 @@ package json
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 )
 
 // 将一个结构体序列化成json字符串并忽略错误
 func ObjectToJson(v any) string {
+	if v == nil {
+		return ""
+	}
 	s, _ := json.Marshal(v)
 	return string(s)
 }
@@ -63,10 +66,10 @@ func ReadJson(file string, v interface{}) error {
 	// defer the closing of our jsonFile so that we can parse it later on
 	defer jsonFile.Close()
 
-	byteValue, _ := ioutil.ReadAll(jsonFile)
+	byteValue, _ := io.ReadAll(jsonFile)
 	err = json.Unmarshal(byteValue, &v)
 	if err != nil {
-		fmt.Printf("在反序列化数据时出现异常" + err.Error())
+		fmt.Printf("json unmarshal fail: %s", err.Error())
 		return err
 	}
 	return nil

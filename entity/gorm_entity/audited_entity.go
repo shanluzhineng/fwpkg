@@ -4,6 +4,7 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 // 可审核的entity
@@ -20,15 +21,17 @@ type AuditedEntity struct {
 }
 
 // 创建时设置对象的基本信息
-func (entity *AuditedEntity) BeforeCreate() {
+func (entity *AuditedEntity) BeforeCreate(db *gorm.DB) error {
 	//调用基类的函数
-	entity.Entity.BeforeCreate()
+	entity.Entity.BeforeCreate(db)
 	if entity.CreationTime.IsZero() {
 		entity.CreationTime = time.Now()
 	}
+	return nil
 }
 
-func (entity *AuditedEntity) BeforeUpdate() {
+func (entity *AuditedEntity) BeforeUpdate(db *gorm.DB) error {
 	//设置最后修改时间
 	entity.LastModificationTime = time.Now()
+	return nil
 }

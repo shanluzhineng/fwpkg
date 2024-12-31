@@ -32,6 +32,13 @@ func (e *CreationAuditedEntity) GetCreationTime() time.Time {
 	return e.CreationTime
 }
 
+func (e *CreationAuditedEntity) BeforeCreate() {
+	e.Entity.BeforeCreate()
+	if e.CreationTime.IsZero() {
+		e.CreationTime = time.Now()
+	}
+}
+
 // #endregion
 
 type IModificationEntity interface {
@@ -50,20 +57,13 @@ type AuditedEntity struct {
 	LastModifierId string `json:"lastModifierId,omitempty" bson:"lastModifierId"`
 }
 
-func (e AuditedEntity) GetObjectId() primitive.ObjectID {
+func (e *AuditedEntity) GetObjectId() primitive.ObjectID {
 	return e.ObjectId
 }
 
-func (entity *CreationAuditedEntity) BeforeCreate() {
-	entity.Entity.BeforeCreate()
-	if entity.CreationTime.IsZero() {
-		entity.CreationTime = time.Now()
-	}
-}
-
-func (entity *AuditedEntity) BeforeUpdate() {
+func (e *AuditedEntity) BeforeUpdate() {
 	now := time.Now()
-	entity.LastModificationTime = &now
+	e.LastModificationTime = &now
 }
 
 // #region IModificationEntity Members

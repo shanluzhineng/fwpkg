@@ -2,12 +2,11 @@ package err
 
 import (
 	"encoding/json"
-	"fmt"
+	"strings"
 
 	"github.com/kataras/iris/v12/context"
 
 	"github.com/shanluzhineng/fwpkg/controllerx/responsex"
-	"github.com/shanluzhineng/fwpkg/system/log"
 )
 
 type errWrapperMiddleware struct {
@@ -35,7 +34,13 @@ func (v *errWrapperMiddleware) ServeHTTP(ctx *context.Context) {
 			}
 		}))
 	}
-	log.Logger.Warn(fmt.Sprintf("ServeHTTP >> resp: %s", string(responseData)))
+	respHeader := ctx.ResponseWriter().Header()
+	ctype := respHeader.Get("Content-Type")
+	if strings.Contains(ctype, "text/plain") || strings.Contains(ctype, "application/json") && !strings.Contains(ctx.Path(), "captcha") {
+		// log.Logger.Warn(fmt.Sprintf("ServeHTTP >> resp: %s, ctype: %s", strings.Trim(string(responseData), "\n"), ctype))
+		return
+	}
+	// log.Logger.Debug(fmt.Sprintf("ServeHTTP >> resp:: %s url: %s, ctype: %s", ctx.Request().Method, ctx.RequestPath(false), ctype))
 }
 
 func (v *errWrapperMiddleware) responseIsIgnore(responseData []byte) bool {

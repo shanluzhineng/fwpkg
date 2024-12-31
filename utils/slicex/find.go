@@ -29,3 +29,13 @@ func FindIndex[V any](s []V, equalsFunc func(item V) bool) int {
 	}
 	return -1
 }
+
+func FindFirstFunc[V any](s []V, filterFunc func(item V) bool) V {
+	for _, e := range s {
+		if filterFunc(e) {
+			return e
+		}
+	}
+	var empty V
+	return empty
+}

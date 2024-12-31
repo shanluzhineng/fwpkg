@@ -30,9 +30,6 @@ func (r *MongoCol) FindOneAndUpdate(entity IEntity, opts ...*options.FindOneAndU
 }
 
 func (r *MongoCol) FindOneAndUpdateWithId(objectId primitive.ObjectID, update interface{}, opts ...*options.FindOneAndUpdateOptions) error {
-	// if objectId.IsZero() {
-	// 	return fmt.Errorf("在保存%s数据时objectId不能为nil", r.documentName)
-	// }
 	//没有设置参数，使用默认的
 	ctx, cancel := CreateContext(r.configuration)
 	defer cancel()
@@ -41,15 +38,30 @@ func (r *MongoCol) FindOneAndUpdateWithId(objectId primitive.ObjectID, update in
 		opts = make([]*options.FindOneAndUpdateOptions, 0)
 		opts = append(opts, options.FindOneAndUpdate().SetUpsert(false))
 	}
+	// 检查传入数据，只更新非 _id 字段
+	upMap, err := ToMap(update)
+	if err != nil {
+		return err
+	}
+	if _, ok := upMap["$set"]; !ok {
+		_, incOk := upMap["$inc"]
+		_, pushOk := upMap["$push"]
+		_, pullOk := upMap["$pull"]
+		_, popOk := upMap["$pop"]
+		_, unsetOk := upMap["$unset"]
+		if !incOk && !pushOk && !pullOk && !popOk && !unsetOk {
+			delete(upMap, "_id")
+			upMap = bson.M{"$set": upMap} // 无其他特殊操作符时再加set。。
+		}
+	}
 	if err := r.collection.FindOneAndUpdate(
 		ctx,
 		bson.M{"_id": objectId},
-		update,
+		upMap,
 		opts...,
 	).Err(); err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -85,3 +97,15 @@ func (r *MongoCol) UpdateMany(filter interface{}, update interface{}, opts ...*o
 }
 
 // #endregion
+
+func ToMap(data interface{}) (map[string]interface{}, error) {
+	var m = make(map[string]interface{})
+	bt, err := bson.Marshal(data)
+	if err != nil {
+		return nil, err
+	}
+	if err := bson.Unmarshal(bt, &m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}

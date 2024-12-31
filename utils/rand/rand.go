@@ -81,14 +81,17 @@ func RandByteArray(length int) []int8 {
 	return datas
 }
 
-// 在2个值之间随机一个值
+// 在2个值之间随机一个值, 上限不能为负数，异常时返回-1
 func RandInt32(minValue int, maxValue int) int {
 	if !SeededSecurely {
 		SeedMathRand()
 	}
-	randValue := rand.Intn(maxValue)
-	if minValue < 0 {
-		return randValue - int(math.Abs(float64(minValue)))
+	if minValue > maxValue {
+		return -1
+	} else if minValue == maxValue {
+		return maxValue
+	} else if maxValue <= 0 {
+		return -1
 	}
-	return randValue
+	return rand.Intn(maxValue-minValue) + minValue
 }

@@ -191,3 +191,13 @@ func createTimeEncoder(configuration *LogConfiguration) zapcore.TimeEncoder {
 		enc.AppendString(t.Format(configuration.Prefix + "2006/01/02-15:04:05.000"))
 	}
 }
+
+// 耗时统计函数, defer 调用，defer定义时已固定定startTime
+// 使用方式： defer TimeCost("RedisDelKey")()
+func TimeCost(funcName string) func() {
+	start := time.Now()
+	return func() {
+		tc := time.Since(start)
+		Logger.Info(fmt.Sprintf("[%s]>>> time cost = %v", funcName, tc))
+	}
+}

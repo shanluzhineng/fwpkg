@@ -9,6 +9,7 @@ var (
 	ChinaTimezone *time.Location
 	//默认的time layout
 	DefaultTimeLayout string = "2006-01-02 15:04:05"
+	DefaultDateLayout string = "2006-01-02"
 )
 
 func init() {

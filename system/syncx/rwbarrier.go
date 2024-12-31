@@ -27,3 +27,10 @@ func GuardLockAs[T any](lock *sync.RWMutex, fn func() T) T {
 	defer lock.Unlock()
 	return fn()
 }
+
+func GuardKeyLock(lockKey string, fn func()) {
+	keyLocker := GetSingleKeyLock()
+	keyLocker.Lock(lockKey)
+	defer keyLocker.Unlock(lockKey)
+	fn()
+}
