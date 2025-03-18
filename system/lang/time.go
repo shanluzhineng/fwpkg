@@ -24,6 +24,14 @@ func TimeToDateStr(t time.Time) string {
 	return t.In(ChinaTimezone).Format(DefaultDateLayout)
 }
 
+// 时间转为date字符串，即：年-月-日
+func TimePtrToTimeStr(t *time.Time) string {
+	if t == nil {
+		return ""
+	}
+	return t.In(ChinaTimezone).Format(DefaultTimeLayout)
+}
+
 func NowToPtr() *time.Time {
 	return TimeToPtr(time.Now())
 }
