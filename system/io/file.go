@@ -39,6 +39,41 @@ func ReadFileContentByLine(file *os.File) ([]string, error) {
 	return content, nil
 }
 
+// ReadFileByPageLine 读取文件的指定页的内容
+// filepath: 文件路径
+// page: 页码（从1开始）
+// size: 每页的行数
+func ReadFileByPageLine(filepath string, page, size int64) ([]string, error) {
+	// 打开文件
+	file, err := os.Open(filepath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	// 创建一个缓冲读取器
+	scanner := bufio.NewScanner(file)
+
+	// 用于存储结果的切片
+	var lines []string
+
+	// 跳过前 (page-1)*size 行
+	lineNumber := int64(0)
+	for scanner.Scan() {
+		lineNumber++
+		if lineNumber > (page-1)*size && lineNumber <= page*size {
+			lines = append(lines, scanner.Text())
+		}
+	}
+
+	// 检查读取过程中是否有错误
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return lines, nil
+}
+
 // EnsurePath is used to make sure a path exists
 func EnsurePath(path string, dir bool) error {
 	if !dir {

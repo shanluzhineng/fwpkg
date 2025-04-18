@@ -1,6 +1,7 @@
 package syncx
 
 import (
+	"encoding/json"
 	"sync"
 )
 
@@ -41,4 +42,17 @@ func (kl *KeyLock) Unlock(key string) {
 		// 可以选择在这里删除锁，或者在其他地方进行清理
 		delete(kl.lockMap, key)
 	}
+}
+
+func (kl *KeyLock) DumpMap() string {
+	// kl.globalLock.Lock()
+	// defer kl.globalLock.Unlock()
+	s, _ := json.Marshal(kl.lockMap)
+	return string(s)
+}
+
+func (kl *KeyLock) TestGLock() string {
+	kl.globalLock.Lock()
+	defer kl.globalLock.Unlock()
+	return "ok"
 }

@@ -75,6 +75,26 @@ func (r *RepositoryBase) Aggregate(pipeline interface{}, dataList interface{}, o
 	return cur.All(ctx, dataList)
 }
 
+func (r *RepositoryBase) AggregateOne(pipeline interface{}, data interface{}, opts ...AggregateOption) (err error) {
+	ctx, cancel := CreateContext(r.configuration)
+	defer cancel()
+
+	//设置默认搜索参数
+	aggregateOptions := options.Aggregate()
+	for _, o := range opts {
+		o(aggregateOptions)
+	}
+	cur, err := r.collection.Aggregate(ctx, pipeline, aggregateOptions)
+	if err != nil {
+		return err
+	}
+	defer cur.Close(ctx)
+	if cur.Next(ctx) {
+		return cur.Decode(data)
+	}
+	return fmt.Errorf("111 no doc")
+}
+
 // #region create members
 
 func (r *RepositoryBase) Create(item interface{}, opts ...*options.InsertOneOptions) (id primitive.ObjectID, err error) {
