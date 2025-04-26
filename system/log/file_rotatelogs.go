@@ -16,7 +16,8 @@ func withFileRotateWriteSink(level zapcore.Level,
 	directory string,
 	options ...rotatelogs.Option) ILoggerSink {
 	return NewLoggerSink(func() zapcore.Core {
-		fileWriter, err := rotatelogs.New(path.Join(directory, "%Y-%m-%d", "log.log"), options...)
+		// directory 下不能再创建子目录，否则rotatelogs的 maxAge会失效，它只能检查当前目录下的文件时间戳。
+		fileWriter, err := rotatelogs.New(path.Join(directory, "log-%Y-%m-%d.log"), options...)
 		if err != nil {
 			return nil
 		}

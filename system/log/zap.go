@@ -58,7 +58,7 @@ func init() {
 	DefaultLogConfiguration.Format = "console"
 	DefaultLogConfiguration.EncodeLevel = "LowercaseColorLevelEncoder"
 	DefaultLogConfiguration.StacktraceKey = "stacktrace"
-	DefaultLogConfiguration.MaxAge = 30
+	DefaultLogConfiguration.MaxAge = 60
 	DefaultLogConfiguration.MaxSize = 200 * 1024 * 1024 // 200m
 	DefaultLogConfiguration.ToConsole = true
 }
