@@ -62,8 +62,9 @@ func initMongodb() {
 				break
 			}
 			log.Logger.Warn(err.Error())
-			log.Logger.Warn("2s后重新测试...")
+			log.Logger.Warn(fmt.Sprintf("2s后重新测试...，uri: %s", eachOption.Uri))
 			time.Sleep(2 * time.Second)
 		}
+		log.Logger.Info(fmt.Sprintf(">>> mongo init DONE，uri: %s", eachOption.Uri))
 	}
 }

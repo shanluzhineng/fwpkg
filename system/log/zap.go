@@ -131,6 +131,7 @@ func NewLog(configuration *LogConfiguration, sinkOpts ...func()) *zap.Logger {
 		rotatelogs.WithRotationSize(configuration.MaxSize),
 		rotatelogs.WithMaxAge(time.Duration(configuration.MaxAge)*24*time.Hour)))
 
+	fmt.Printf(">>> logConfig: %+v\n", configuration)
 	//用来注册额外的sink
 	for _, eachSinkOpt := range sinkOpts {
 		eachSinkOpt()

@@ -46,6 +46,7 @@ func initRedis() *redis.Client {
 		log.Logger.Error(err.Error() + ",sleep 5 seconds...")
 		time.Sleep(5 * time.Second)
 	}
+	log.Logger.Info(fmt.Sprintf(">>> Redis init DONE, addr: %s", client.Options().Addr))
 	app.Context.RegistInstance(client)
 	return client
 }
